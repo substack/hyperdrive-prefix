@@ -38,13 +38,13 @@ test('open', function (t) {
       )
     })
 
-    dir1.createFileReadStream('dir1/hello.txt').pipe(concat(function (buf) {
+    dir1.createFileReadStream('hello.txt').pipe(concat(function (buf) {
       t.equal(buf.toString(), 'BEEP BOOP\n')
     }))
-    dir1.createFileReadStream('dir1/whatever.txt').pipe(concat(function (buf) {
+    dir1.createFileReadStream('whatever.txt').pipe(concat(function (buf) {
       t.equal(buf.toString(), 'hey\n')
     }))
-    dir2.createFileReadStream('dir2/hello.txt').pipe(concat(function (buf) {
+    dir2.createFileReadStream('hello.txt').pipe(concat(function (buf) {
       t.equal(buf.toString(), 'EHLO WORLD\n')
     }))
   })
