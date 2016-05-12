@@ -22,9 +22,9 @@
     "tape": "^4.5.1"
   },
   "dependencies": {
+    "duplexify": "^3.4.3",
     "inherits": "^2.0.1",
     "quotemeta": "~0.0.0",
-    "read-only-stream": "^2.0.0",
     "through2": "^2.0.1"
   },
   "directories": {
