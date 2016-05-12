@@ -9,19 +9,14 @@ test('open', function (t) {
   t.plan(9)
   var drive = hyperdrive(memdb())
   var archive = drive.createArchive()
-  var pending = 2
 
   var dir1 = prefix('dir1', archive)
   dir1.createFileWriteStream('hello.txt').end('BEEP BOOP\n')
   dir1.createFileWriteStream('whatever.txt').end('hey\n')
-  dir1.finalize(done)
 
   var dir2 = prefix('dir2', archive)
   dir2.createFileWriteStream('hello.txt').end('EHLO WORLD\n')
-  dir2.finalize(done)
-
-  function done () {
-    if (--pending !== 0) return
+  archive.finalize(function () {
     collect(dir1.list(), function (err, files) {
       t.error(err)
       t.deepEqual(
@@ -42,6 +37,7 @@ test('open', function (t) {
         'all files'
       )
     })
+
     dir1.createFileReadStream('dir1/hello.txt').pipe(concat(function (buf) {
       t.equal(buf.toString(), 'BEEP BOOP\n')
     }))
@@ -51,7 +47,7 @@ test('open', function (t) {
     dir2.createFileReadStream('dir2/hello.txt').pipe(concat(function (buf) {
       t.equal(buf.toString(), 'EHLO WORLD\n')
     }))
-  }
+  })
 })
 
 function fname (entry) { return entry.name }

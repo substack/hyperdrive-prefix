@@ -38,10 +38,6 @@ Wrap.prototype.append = function (entry, cb) {
   this._archive.append(this._add(entry), cb)
 }
 
-Wrap.prototype.finalize = function (cb) {
-  this._archive.finalize(cb)
-}
-
 Wrap.prototype.get = function (index, cb) {
   this._archive.get(index, cb)
 }
