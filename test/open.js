@@ -2,10 +2,11 @@ var test = require('tape')
 var hyperdrive = require('hyperdrive')
 var memdb = require('memdb')
 var collect = require('collect-stream')
+var concat = require('concat-stream')
 var prefix = require('../')
 
 test('open', function (t) {
-  t.plan(6)
+  t.plan(9)
   var drive = hyperdrive(memdb())
   var archive = drive.createArchive()
   var pending = 2
@@ -41,6 +42,15 @@ test('open', function (t) {
         'all files'
       )
     })
+    dir1.createFileReadStream('dir1/hello.txt').pipe(concat(function (buf) {
+      t.equal(buf.toString(), 'BEEP BOOP\n')
+    }))
+    dir1.createFileReadStream('dir1/whatever.txt').pipe(concat(function (buf) {
+      t.equal(buf.toString(), 'hey\n')
+    }))
+    dir2.createFileReadStream('dir2/hello.txt').pipe(concat(function (buf) {
+      t.equal(buf.toString(), 'EHLO WORLD\n')
+    }))
   }
 })
 
