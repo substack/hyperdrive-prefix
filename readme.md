@@ -57,6 +57,7 @@ DIR2/
 var prefix = require('hyperdrive-prefix')
 ```
 
+## var subarchive = prefix(str)
 ## var subarchive = prefix(str, archive)
 
 Create a `subarchive` of `archive` where paths are transparently prefixed with a
@@ -73,6 +74,13 @@ directly.
 * `subarchive.list()`
 * `subarchive.createFileReadStream(entry)`
 * `subarchive.createFileWriteStream(entry)`
+
+`archive` is optional. You can set it later with
+`subarchive.setArchive(archive)`.
+
+## subarchive.setArchive(archive)
+
+Set the underlying `archive` if one wasn't set up initially.
 
 # install
 
