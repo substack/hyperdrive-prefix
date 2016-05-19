@@ -3,6 +3,7 @@ var EventEmitter = require('events').EventEmitter
 var through = require('through2')
 var quotemeta = require('quotemeta')
 var duplexify = require('duplexify')
+var path = require('path')
 
 inherits(Wrap, EventEmitter)
 module.exports = Wrap
@@ -35,18 +36,18 @@ Wrap.prototype._getArchive = function (fn) {
 
 Wrap.prototype._add = function (entry) {
   if (typeof entry === 'string') {
-    entry = this._prefix + '/' + entry
+    entry = path.normalize(this._prefix + '/' + entry)
   } else if (entry.name) {
-    entry.name = this._prefix + '/' + entry.name
+    entry.name = path.normalize(this._prefix + '/' + entry.name)
   }
   return entry
 }
 
 Wrap.prototype._remove = function (entry) {
   if (typeof entry === 'string') {
-    entry = entry.replace(this._re, '')
+    entry = path.normalize(entry.replace(this._re, ''))
   } else if (entry.name) {
-    entry.name = entry.name.replace(this._re, '')
+    entry.name = path.normalize(entry.name).replace(this._re, '')
   }
   return entry
 }
