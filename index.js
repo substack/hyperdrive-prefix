@@ -4,6 +4,8 @@ var through = require('through2')
 var quotemeta = require('quotemeta')
 var duplexify = require('duplexify')
 var path = require('path')
+var once = require('once')
+var collect = require('collect-stream')
 
 inherits(Wrap, EventEmitter)
 module.exports = Wrap
@@ -71,14 +73,24 @@ Wrap.prototype.download = function (index, cb) {
   })
 }
 
-Wrap.prototype.list = function () {
+Wrap.prototype.list = function (opts, cb) {
+  if (typeof opts === 'function') {
+    cb = opts
+    opts = {}
+  }
   var self = this
   var d = duplexify.obj()
+  if (cb) {
+    cb = once(cb)
+    collect(d, cb)
+  }
   var prefix = self._prefix
   var stream = through.obj(write)
   d.setReadable(stream)
   self._getArchive(function (archive) {
-    archive.list().pipe(stream)
+    var r = archive.list()
+    r.on('error', d.emit.bind(d, 'error'))
+    r.pipe(stream)
   })
   return d
 
@@ -107,3 +119,5 @@ Wrap.prototype.createFileWriteStream = function (entry) {
   })
   return d
 }
+
+function noop () {}
