@@ -1,6 +1,6 @@
 {
   "name": "hyperdrive-prefix",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "prefix a hyperdrive archive with a path",
   "main": "index.js",
   "scripts": {
