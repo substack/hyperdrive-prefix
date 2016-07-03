@@ -88,7 +88,7 @@ Wrap.prototype.list = function (opts, cb) {
   var stream = through.obj(write)
   d.setReadable(stream)
   self._getArchive(function (archive) {
-    var r = archive.list()
+    var r = archive.list(opts)
     r.on('error', d.emit.bind(d, 'error'))
     r.pipe(stream)
   })
