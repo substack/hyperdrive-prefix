@@ -73,6 +73,13 @@ Wrap.prototype.download = function (index, cb) {
   })
 }
 
+Wrap.prototype.lookup = function (name, cb) {
+  var self = this
+  this._getArchive(function (archive) {
+    archive.lookup(self._prefix + '/' + name, cb)
+  })
+}
+
 Wrap.prototype.list = function (opts, cb) {
   if (typeof opts === 'function') {
     cb = opts
